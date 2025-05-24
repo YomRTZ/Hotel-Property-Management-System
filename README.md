@@ -14,7 +14,7 @@ A PHP-based application designed to manage hotel operations, including hotels, r
 
 ## Prerequisites
 - PHP 7.4 or higher
-- MySQL (via XAMPP or similar)
+- MySQL (via XAMPP)
 - Composer (for dependency management)
 
 ## Installation
