@@ -1,6 +1,6 @@
 # Hotel Property Management System (Hotel PMS)
 
-A PHP-based application designed to manage hotel operations, including hotels, room types, rooms, board prices, room rates, and currency exchanges. Built with a simplified MVC architecture using RedBeanPHP for database management, it offers CRUD functionality without manual SQL table creation.
+A PHP-based application designed to manage hotel operations, including hotels, room types, rooms, board prices, room rates, and currency exchanges. Built with a simplified MVC architecture using RedBeanPHP for database management.
 
 - **Date**: Created on May 25, 2025
 - **Author**: Rediet Tedila
