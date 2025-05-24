@@ -1,0 +1,16 @@
+{
+    "name": "hp/frontoffice",
+    "autoload": {
+        "psr-4": {
+            "Hp\\Frontoffice\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "rediet tedila"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    }
+}
