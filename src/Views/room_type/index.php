@@ -130,7 +130,7 @@
         <span onclick="window.location.href='index.php?tab=hotel'">Hotel Information</span>
         <span onclick="window.location.href='index.php?tab=season'">Season</span>
         <span class="active" onclick="window.location.href='index.php?tab=roomtype'">Room Type</span>
-        <span onclick="window.location.href='index.php?tab=room'">Room</span>
+        <span class="active" onclick="window.location.href='index.php?tab=room'">Room</span>
         <span onclick="window.location.href='index.php?tab=board'">Board</span>
         <span onclick="window.location.href='index.php?tab=roomrate'">Room Rate</span>
     </div>

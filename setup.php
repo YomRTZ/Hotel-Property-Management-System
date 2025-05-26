@@ -2,7 +2,7 @@
 require_once 'src/Helpers/Database.php';
 use RedBeanPHP\R;
 
-R::freeze(false);
+R::freeze(true);
 
 // Hotel table
 $hotel = R::dispense('hotel');
@@ -30,8 +30,6 @@ try {
 } catch (Exception $e) {
     die("Error creating roomtype: " . $e->getMessage());
 }
-
-// Define schema for roomtype table, explicitly set hotel_id to match hotel.id
 R::exec('ALTER TABLE roomtype 
          MODIFY COLUMN hotel_id INT(11),
          MODIFY COLUMN description VARCHAR(255),
@@ -45,6 +43,9 @@ $room->room_number = null;
 $room->room_type_id = null;
 $room->telephone_extension = null;
 $room->location = null;
+$room->room_specialization=null;
+$room->no_of_bed = null;
+$room->change_to = null;
 R::store($room);
 
 // Define schema for room table

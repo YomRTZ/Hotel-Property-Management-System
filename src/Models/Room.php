@@ -1,11 +1,6 @@
 <?php
+use RedBeanPHP\R;
 class Room {
-    private $db;
-
-    public function __construct() {
-        $this->db = new Database();
-    }
-
     public function getAll() {
         return R::findAll('room');
     }
@@ -14,11 +9,15 @@ class Room {
         return R::load('room', $id);
     }
 
-    public function getByRoomTypeId($roomTypeId) {
-        return R::find('room', 'room_type_id = ?', [$roomTypeId]);
+    public function getAllHotels() {
+        return array_values(R::findAll('hotel'));
+    }
+    public function getAllRoomTypes() {
+        return array_values(R::findAll('roomtype'));
     }
 
     public function save($data) {
+        $id = $data['id'] ?? null;
         $room = $data['id'] ? R::load('room', $data['id']) : R::dispense('room');
         $room->room_number = $data['room_number'];
         $room->room_type_id = $data['room_type_id'];
@@ -26,12 +25,12 @@ class Room {
         $room->room_specialization = $data['room_specialization'];
         $room->location = $data['location'];
         $room->no_of_bed = $data['no_of_bed'];
-        $room->remark = $data['remark'] ?? null;
         $room->change_to = $data['change_to'];
         return R::store($room);
     }
 
-    public function delete($id) {
+
+    public function deleteRoom($id) {
         $room = R::load('room', $id);
         if ($room->id) {
             R::trash($room);
