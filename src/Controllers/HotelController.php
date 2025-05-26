@@ -18,7 +18,6 @@ class HotelController {
 
     public function save() {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Debug incoming POST data
         error_log('POST Data: ' . print_r($_POST, true));
 
         $data = [
@@ -28,8 +27,6 @@ class HotelController {
             'is_default' => isset($_POST['is_default']) ? (int)$_POST['is_default'] : 0,
             'remark' => isset($_POST['remark']) ? (string)$_POST['remark'] : ''
         ];
-
-        // Debug data before saving
         error_log('Data to Save: ' . print_r($data, true));
 
         $this->model->saveHotel($data);
@@ -54,7 +51,7 @@ class HotelController {
     }
 
     public function close() {
-        // header('Location: main.php'); // Adjust as needed
+        // header('Location: main.php'); 
         exit;
     }
 }

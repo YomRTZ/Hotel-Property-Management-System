@@ -12,6 +12,11 @@
             margin: 0;
             padding: 0;
         }
+        .grade-select {
+    width: 100%;
+    border: none;
+    box-sizing: border-box;
+}
         .title-bar {
             background-color: #000080;
             color: white;
@@ -108,12 +113,12 @@
         </form>
     </div>
     <div class="nav-tabs">
-        <span class="active">Hotel Information</span>
-        <span>Season</span>
-       <a href="index.php?tab=roomtype">Room Types</a>
-        <span>Room</span>
-        <span>Board</span>
-        <span>Room Rate</span>
+        <span class="active" onclick="window.location.href='index.php?tab=hotel'">Hotel Information</span>
+        <span onclick="window.location.href='index.php?tab=season'">Season</span>
+        <span  onclick="window.location.href='index.php?tab=roomtype'">Room Type</span>
+        <span onclick="window.location.href='index.php?tab=room'">Room</span>
+        <span onclick="window.location.href='index.php?tab=board'">Board</span>
+        <span onclick="window.location.href='index.php?tab=roomrate'">Room Rate</span>
     </div>
     <div class="table-container">
         <table>
@@ -130,7 +135,6 @@
     <?php
     $sn = 1;
     foreach ($hotels as $hotel):
-        $selected = isset($_SESSION['selected_hotel']) && $_SESSION['selected_hotel'] == $hotel->id ? 'selected' : '';
     ?>
         <tr class="<?php echo $selected; ?>" data-id="<?php echo $hotel->id; ?>">
             <td><?php echo $sn++; ?></td>
@@ -189,7 +193,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     let selectedRow = null;
 

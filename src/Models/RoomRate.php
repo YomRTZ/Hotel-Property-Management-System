@@ -1,41 +1,38 @@
 <?php
+use RedBeanPHP\R;
 class RoomRate {
-    private $db;
-
-    public function __construct() {
-        $this->db = new Database();
-    }
-
     public function getAll() {
-        return R::findAll('room_rate');
+        return R::findAll('roomrate');
     }
 
     public function getById($id) {
-        return R::load('room_rate', $id);
+        return R::load('roomrate', $id);
     }
 
-    public function getByRoomTypeId($roomTypeId) {
-        return R::find('room_rate', 'room_type_id = ?', [$roomTypeId]);
+    public function getAllHotels() {
+        return array_values(R::findAll('hotel'));
+    }
+    public function getAllRoomTypes() {
+        return array_values(R::findAll('roomtype'));
     }
 
     public function save($data) {
-        $roomRate = $data['id'] ? R::load('room_rate', $data['id']) : R::dispense('room_rate');
-        $roomRate->season = $data['season'];
-        $roomRate->rate_description = $data['rate_description'];
-        $roomRate->room_type_id = $data['room_type_id'];
-        $roomRate->rate = $data['rate'];
-        $roomRate->is_default = isset($data['is_default']);
-        $roomRate->currency_code = $data['currency_code'];
-        $roomRate->board_price_id = $data['board_price_id'] ?? null;
-        $roomRate->price_tag = $data['price_tag'];
-        $roomRate->remark = $data['remark'] ?? null;
-        return R::store($roomRate);
+        $id = $data['id'] ?? null;
+        $roomrate = $data['id'] ? R::load('roomrate', $data['id']) : R::dispense('roomrate');
+        $roomrate->board_type = $data['board_type'];
+        $roomrate->rate = $data['rate'];
+        $roomrate->currency = $data['currency'];
+        $roomrate->isdefault = $data['isdefault'];
+        $roomrate->remark = $data['remark'];
+        $roomrate->account = $data['account'];
+        return R::store($roomrate);
     }
 
-    public function delete($id) {
-        $roomRate = R::load('room_rate', $id);
-        if ($roomRate->id) {
-            R::trash($roomRate);
+
+    public function deleteRoomRate($id) {
+        $roomrate = R::load('roomrate', $id);
+        if ($roomrate->id) {
+            R::trash($roomrate);
             return true;
         }
         return false;

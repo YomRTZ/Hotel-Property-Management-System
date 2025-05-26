@@ -12,6 +12,9 @@
             margin: 0;
             padding: 0;
         }
+        .description-select{    width: 100%;
+    border: none;
+    box-sizing: border-box;}
         .title-bar {
             background-color: #000080;
             color: white;
@@ -92,27 +95,12 @@
         .dropdown-container {
             margin: 10px;
             padding: 5px;
-            background-color: #ffffff;
-            border: 1px solid #000000;
         }
     </style>
 </head>
 <body>
     <div class="title-bar">
         <span>Maintain PMS</span>
-    </div>
-    <div class="dropdown-container">
-        <label for="hotelDropdown">Select Hotel: </label>
-        <select id="hotelDropdown" name="hotel_id">
-            <option value="0">Select Hotel</option>
-            <?php
-            error_log('Hotels in view: ' . print_r($hotels, true)); 
-            foreach ($hotels as $hotel): ?>
-                <option value="<?php echo $hotel->id; ?>" <?php echo $selectedHotelId && $selectedHotelId == $hotel->id ? 'selected' : ''; ?>>
-                    <?php echo htmlspecialchars($hotel->name); ?>
-                </option>
-            <?php endforeach; ?>
-        </select>
     </div>
     <div class="toolbar">
         <form method="post" action="index.php?action=save&tab=roomtype" style="display:inline;">
@@ -126,11 +114,24 @@
             <button type="submit">Close</button>
         </form>
     </div>
+        <div class="dropdown-container">
+        <label for="hotelDropdown">Select Hotel: </label>
+        <select id="hotelDropdown" name="hotel_id">
+            <option value="0">Select Hotel</option>
+            <?php
+            error_log('Hotels in view: ' . print_r($hotels, true)); 
+            foreach ($hotels as $hotel): ?>
+                <option value="<?php echo $hotel->id; ?>" <?php echo $selectedHotelId && $selectedHotelId == $hotel->id ? 'selected' : ''; ?>>
+                    <?php echo htmlspecialchars($hotel->name); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+    </div>
     <div class="nav-tabs">
         <span onclick="window.location.href='index.php?tab=hotel'">Hotel Information</span>
         <span onclick="window.location.href='index.php?tab=season'">Season</span>
         <span class="active" onclick="window.location.href='index.php?tab=roomtype'">Room Type</span>
-        <span class="active" onclick="window.location.href='index.php?tab=room'">Room</span>
+        <span onclick="window.location.href='index.php?tab=room'">Room</span>
         <span onclick="window.location.href='index.php?tab=board'">Board</span>
         <span onclick="window.location.href='index.php?tab=roomrate'">Room Rate</span>
     </div>
