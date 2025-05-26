@@ -1,38 +1,60 @@
 <?php
-require_once __DIR__ . '/../Models/Hotel.php';
+session_start();
+require_once 'src/Models/Hotel.php';
 
 class HotelController {
     private $model;
 
     public function __construct() {
-        $this->model = new Hotel();
+        $this->model = new HotelModel();
     }
 
     public function index() {
-        $hotels = $this->model->getAll();
-        include __DIR__ . '/../Views/hotel/index.php';
-    }
-
-    public function form($id = null) {
-        $hotel = $id ? $this->model->getById($id) : null;
-        include __DIR__ . '/../Views/hotel/form.php';
+        $hotels = $this->model->getAllHotels();
+        $error = $_SESSION['error'] ?? null;
+        unset($_SESSION['error']);
+        require_once 'src/Views/hotel/index.php';
     }
 
     public function save() {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Debug incoming POST data
+        error_log('POST Data: ' . print_r($_POST, true));
+
         $data = [
             'id' => $_POST['id'] ?? null,
-            'name' => filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING),
-            'grade' => filter_input(INPUT_POST, 'grade', FILTER_SANITIZE_NUMBER_INT),
-            'is_default' => isset($_POST['is_default']),
-            'remark' => filter_input(INPUT_POST, 'remark', FILTER_SANITIZE_STRING)
+            'name' => isset($_POST['name']) ? (string)$_POST['name'] : '',
+            'grade' => isset($_POST['grade']) ? (string)$_POST['grade'] : '',
+            'is_default' => isset($_POST['is_default']) ? (int)$_POST['is_default'] : 0,
+            'remark' => isset($_POST['remark']) ? (string)$_POST['remark'] : ''
         ];
 
-        $this->model->save($data);
-        header("Location: index.php?controller=hotel&action=index");
+        // Debug data before saving
+        error_log('Data to Save: ' . print_r($data, true));
+
+        $this->model->saveHotel($data);
+        header('Location: index.php');
+        exit;
+    }
+}
+
+    public function delete() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'] ?? null;
+            if ($id) {
+                if ($this->model->hasRoomTypes($id)) {
+                    $_SESSION['error'] = "Cannot delete hotel because it is linked to room types.";
+                } else {
+                    $this->model->deleteHotel($id);
+                }
+            }
+        }
+        header('Location: index.php');
+        exit;
     }
 
-    public function delete($id) {
-        $this->model->delete($id);
-        header("Location: index.php?controller=hotel&action=index");
+    public function close() {
+        // header('Location: main.php'); // Adjust as needed
+        exit;
     }
 }

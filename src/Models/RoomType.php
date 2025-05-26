@@ -1,39 +1,40 @@
 <?php
-class RoomType {
-    private $db;
+use RedBeanPHP\R;
 
-    public function __construct() {
-        $this->db = new Database();
+class RoomTypeModel {
+    public function getAllRoomTypes() {
+        return R::findAll('roomtype');
+    }
+    public function getRoomTypeById($id) {
+        return R::load('roomtype', $id);
+    }
+ public function getAllHotels() {
+        return array_values(R::findAll('hotel'));
     }
 
-    public function getAll() {
-        return R::findAll('room_type');
-    }
-
-    public function getById($id) {
-        return R::load('room_type', $id);
-    }
-
-    public function getByHotelId($hotelId) {
-        return R::find('room_type', 'hotel_id = ?', [$hotelId]);
-    }
-
-    public function save($data) {
-        $roomType = $data['id'] ? R::load('room_type', $data['id']) : R::dispense('room_type');
+    public function saveRoomType($data) {
+        $id = $data['id'] ?? null;
+        $roomType = $id ? R::load('roomtype', $id) : R::dispense('roomtype');
         $roomType->hotel_id = $data['hotel_id'];
         $roomType->description = $data['description'];
-        $roomType->clip_or_picture = $data['clip_or_picture'] ?? null;
-        $roomType->remark = $data['remark'] ?? null;
         $roomType->account = $data['account'];
-        return R::store($roomType);
+        $roomType->clip_or_picture = $data['clip_or_picture'];
+        $roomType->remark = $data['remark'] ?? '';
+        R::store($roomType);
+        return $roomType;
     }
-
-    public function delete($id) {
-        $roomType = R::load('room_type', $id);
+    public function deleteRoomType($id) {
+        $roomType = R::load('roomtype', $id);
         if ($roomType->id) {
             R::trash($roomType);
             return true;
         }
         return false;
+    }
+
+    // Check if room type has associated rooms
+    public function hasRooms($id) {
+        $rooms = R::find('room', 'room_type_id = ?', [$id]);
+        return count($rooms) > 0;
     }
 }
