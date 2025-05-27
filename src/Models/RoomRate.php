@@ -19,12 +19,14 @@ class RoomRate {
     public function save($data) {
         $id = $data['id'] ?? null;
         $roomrate = $data['id'] ? R::load('roomrate', $data['id']) : R::dispense('roomrate');
-        $roomrate->board_type = $data['board_type'];
+        $roomrate->tagtype = $data['tagtype'];
         $roomrate->rate = $data['rate'];
         $roomrate->currency = $data['currency'];
         $roomrate->isdefault = $data['isdefault'];
-        $roomrate->remark = $data['remark'];
-        $roomrate->account = $data['account'];
+        $roomrate->pricetag = $data['pricetag'];
+        $roomrate->description = $data['description'];
+        $roomrate->room_type_id = $data['room_type_id'] ?? null;
+        $roomrate->season = $data['season'] ?? null;
         return R::store($roomrate);
     }
 

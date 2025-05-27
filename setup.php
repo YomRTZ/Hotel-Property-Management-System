@@ -75,15 +75,23 @@ $roomRate = R::dispense('roomrate');
 $roomRate->room_type_id = null;
 $roomRate->season = null;
 $roomRate->rate = null;
-$roomRate->currency_code = null;
+$roomRate->currency = null;
+$roomRate->isdefault = null;
+$roomRate->description = null;
+$roomRate->tagtype = null;
+$roomRate->	pricetag = null;
 R::store($roomRate);
-
-// Define schema for roomrate table
+// Room Rate table
 R::exec('ALTER TABLE roomrate 
+         MODIFY COLUMN hotel_id INT(11),
          MODIFY COLUMN room_type_id INT(11),
          MODIFY COLUMN season VARCHAR(50),
+         MODIFY COLUMN description VARCHAR(250),
+         MODIFY COLUMN tagtype VARCHAR(50),
+         MODIFY COLUMN is_default TINYINT(1) UNSIGNED,
          MODIFY COLUMN rate DECIMAL(10,2),
-         MODIFY COLUMN currency_code CHAR(3)');
+         MODIFY COLUMN pricetag VARCHAR(250),
+         MODIFY COLUMN currency VARCHAR(50)');
 
 echo "Database 'FrontOffice' and tables created successfully!";
 ?>

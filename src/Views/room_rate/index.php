@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maintain PMS - Room Rate</title>
+    <title>Maintain PMS - Room</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -12,6 +12,12 @@
             margin: 0;
             padding: 0;
         }
+               .grade-select {
+    width: 100%;
+    border: none;
+    box-sizing: border-box;
+}
+.border{ border: none;}
         .title-bar {
             background-color: #000080;
             color: white;
@@ -93,8 +99,10 @@
         .dropdown-container {
             margin: 10px;
             padding: 5px;
-            background-color: #ffffff;
-            border: 1px solid #000000;
+            margin-right: 30%;
+    margin-left: 10%;
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
@@ -114,8 +122,8 @@
             <button type="submit">Close</button>
         </form>
     </div>
-        <div class="dropdown-container">
-        <label for="hotelDropdown">Select Hotel: </label>
+        <div class="dropdown-container ">
+      <div>  <label for="hotelDropdown">Select Hotel: </label>
         <select id="hotelDropdown" name="hotel_id">
             <option value="0">Select Hotel</option>
             <?php 
@@ -125,8 +133,8 @@
                     <?php echo htmlspecialchars($hotel->name); ?>
                 </option>
             <?php endforeach; ?>
-        </select>
-        <label for="roomTypeDropdown">Select Room Type: </label>
+        </select></div>
+        <div><label for="roomTypeDropdown">Select Room Type: </label>
         <select id="roomTypeDropdown" name="room_type_id">
             <option value="0">Select Room Type</option>
             <?php foreach ($roomTypes as $roomType): ?>
@@ -134,7 +142,7 @@
                     <?php echo htmlspecialchars($roomType->description); ?>
                 </option>
             <?php endforeach; ?>
-        </select>
+        </select></div>
     </div>
     <div class="nav-tabs">
         <span onclick="window.location.href='index.php?tab=hotel'">Hotel Information</span>
@@ -145,97 +153,88 @@
         <span class="active" onclick="window.location.href='index.php?tab=roomrate'">Room Rate</span>
     </div>
     <div class="table-container">
-        <table id="roomRateTable">
-            <thead>
-                <tr>
-                    <th>SN</th>
-                    <th>Season</th>
-                    <th>Description
-                    <th>Rate</th>
-                    <th>Is Default</th>
-                    <th>Tag Type</th>
-                    <th>Currency</th>
-                    <th>Board Price</th>
-                    <th>Remark</th>
-                </tr>
-            </thead>
-            <tbody id="roomRateTableBody">
-                <?php $sn = 1; foreach ($roomRates as $roomRate): ?>
-                    <tr class="<?php echo isset($_SESSION['selected_roomrate']) && $_SESSION['selected_roomrate'] == $roomRate->id ? 'selected' : ''; ?>" data-id="<?php echo $roomRate->id; ?>" data-hotel-id="<?php echo isset($roomRate->hotel_id) ? $roomRate->hotel_id : ''; ?>">
-                        <td><?php echo $sn++; ?></td>
-                        <td>
-                            <select data-field="room_type_id">
-                                <option value="0" <?php echo !$roomRate->room_type_id ? 'selected' : ''; ?>>Select Room Type</option>
-                                <?php foreach ($roomTypes as $roomType): ?>
-                                    <option value="<?php echo $roomType->id; ?>" <?php echo $roomRate->room_type_id == $roomType->id ? 'selected' : ''; ?>>
-                                        <?php echo htmlspecialchars($roomType->description); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </td>
-                        <td>
-                            <select data-field="season_id">
-                                <option value="0" <?php echo !$roomRate->season_id ? 'selected' : ''; ?>>Select Season</option>
-                                <?php foreach ($seasons as $season): ?>
-                                    <option value="<?php echo $season->id; ?>" <?php echo $roomRate->season_id == $season->id ? 'selected' : ''; ?>>
-                                        <?php echo htmlspecialchars($season->name); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </td>
-                        <td class="editable" data-field="rate" contenteditable="true"><?php echo htmlspecialchars($roomRate->rate ?? ''); ?></td>
-                        <td>
-                            <select data-field="currency">
-                                <option value="" <?php echo !$roomRate->currency ? 'selected' : ''; ?>>Select Currency</option>
-                                <option value="196_USD" <?php echo $roomRate->currency === '196_USD' ? 'selected' : ''; ?>>196_USD</option>
-                                <option value="195_ETB" <?php echo $roomRate->currency === '195_ETB' ? 'selected' : ''; ?>>195_ETB</option>
-                            </select>
-                        </td>
-                        <td>
-                            <input type="checkbox" data-field="isdefault" <?php echo $roomRate->isdefault == '1' ? 'checked' : ''; ?>>
-                        </td>
-                        <td class="editable" data-field="remark" contenteditable="true"><?php echo htmlspecialchars($roomRate->remark ?? ''); ?></td>
-                        <td class="editable" data-field="account" contenteditable="true"><?php echo htmlspecialchars($roomRate->account ?? ''); ?></td>
-                    </tr>
-                <?php endforeach; ?>
-                <tr class="new-row" data-id="new">
-                    <td><?php echo $sn++; ?></td>
-                    <td>
-                        <select data-field="room_type_id">
-                            <option value="0">Select Room Type</option>
-                            <?php foreach ($roomTypes as $roomType): ?>
-                                <option value="<?php echo $roomType->id; ?>">
-                                    <?php echo htmlspecialchars($roomType->description); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </td>
-                    <td>
-                        <select data-field="season_id">
-                            <option value="0">Select Season</option>
-                            <?php foreach ($seasons as $season): ?>
-                                <option value="<?php echo $season->id; ?>">
-                                    <?php echo htmlspecialchars($season->name); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                    </td>
-                    <td class="editable" data-field="rate" contenteditable="true"></td>
-                    <td>
-                        <select data-field="currency">
-                            <option value="">Select Currency</option>
-                            <option value="196_USD">196_USD</option>
-                            <option value="195_ETB">195_ETB</option>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="checkbox" data-field="isdefault">
-                    </td>
-                    <td class="editable" data-field="remark" contenteditable="true"></td>
-                    <td class="editable" data-field="account" contenteditable="true"></td>
-                </tr>
-            </tbody>
-        </table>
+      <table id="roomRateTable">
+    <thead>
+        <tr>
+            <th>SN</th>
+            <th>Season</th>
+            <th>Rate Description</th>
+            <th>Rate</th>
+            <th>isDefault</th>
+            <th>Currency</th>
+            <th>Tag Type</th>
+            <th>Price Tag</th>
+        </tr>
+    </thead>
+    <tbody id="roomRateTableBody">
+        <?php $sn = 1; foreach ($roomRates as $rate): ?>
+            <tr data-id="<?php echo $rate->id; ?>">
+                <td><?php echo $sn++; ?></td>
+                <td>
+                    <select data-field="season" class="grade-select">
+                        <option value="10_Normal Season" <?php echo $rate->season === '10_Normal Season' ? 'selected' : ''; ?>>10_Normal Season</option>
+                    </select>
+                </td>
+                <td>
+                    <select data-field="description" class="grade-select">
+                        <?php 
+                        $descriptions = ['Normal Price', 'Rack Rate', 'World Vision', 'UN', 'Discounted', 'Discounted 2'];
+                        foreach ($descriptions as $desc): ?>
+                            <option value="<?php echo $desc; ?>" <?php echo $rate->description === $desc ? 'selected' : ''; ?>><?php echo $desc; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+                <td><input class="border"  data-field="rate" value="<?php echo htmlspecialchars($rate->rate ?? ''); ?>"></td>
+                <td><input type="checkbox" data-field="is_default" <?php echo $rate->is_default ? 'checked' : ''; ?>></td>
+                <td>
+                    <select data-field="currency" class="grade-select">
+                        <option value="196_USD" <?php echo $rate->currency === '196_USD' ? 'selected' : ''; ?>>196_USD</option>
+                        <option value="195_ETB" <?php echo $rate->currency === '195_ETB' ? 'selected' : ''; ?>>195_ETB</option>
+                    </select>
+                </td>
+                <td>
+                    <select data-field="tagtype" class="grade-select">
+                        <option value="None" <?php echo $rate->tagtype === 'None' ? 'selected' : ''; ?>>None</option>
+                    </select>
+                </td>
+                <td><input class="border" data-field="pricetag" value="<?php echo htmlspecialchars($rate->pricetag ?? ''); ?>"></td>
+            </tr>
+        <?php endforeach; ?>
+        <!-- New empty row for adding new record -->
+        <tr class="new-row" data-id="new">
+            <td><?php echo $sn++; ?></td>
+            <td>
+                <select data-field="season" class="grade-select">
+                    <option value="10_Normal Season">10_Normal Season</option>
+                </select>
+            </td>
+            <td>
+                <select data-field="description" class="grade-select">
+                    <option value="Normal Price">Normal Price</option>
+                    <option value="Rack Rate">Rack Rate</option>
+                    <option value="World Vision">World Vision</option>
+                    <option value="UN">UN</option>
+                    <option value="Discounted">Discounted</option>
+                    <option value="Discounted 2">Discounted 2</option>
+                </select>
+            </td>
+            <td><input class="border" data-field="rate"></td>
+            <td><input type="checkbox" data-field="is_default"></td>
+            <td>
+                <select data-field="currency" class="grade-select">
+                    <option value="196_USD">196_USD</option>
+                    <option value="195_ETB">195_ETB</option>
+                </select>
+            </td>
+            <td>
+                <select data-field="tagtype" class="grade-select">
+                    <option value="None">None</option>
+                </select>
+            </td>
+            <td><input class="border" data-field="pricetag"></td>
+        </tr>
+    </tbody>
+</table>
     </div>
 
     <!-- Modal for Deletion Error -->
@@ -243,11 +242,11 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteErrorModalLabel">Cannot Delete Room Rate</h5>
+                    <h5 class="modal-title" id="deleteErrorModalLabel">Cannot Delete Room</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    This room rate cannot be deleted because it is linked to other data.
+                    This room cannot be deleted because it is linked to other data.
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -277,18 +276,18 @@
                 selectedRow = row;
                 const deleteIdInput = document.getElementById('deleteId');
                 deleteIdInput.value = row.dataset.id !== 'new' ? row.dataset.id : '';
-                console.log('Selected Row ID:', deleteIdInput.value); // Debug: Log the selected ID
+               
             });
         });
 
         // Confirm deletion
         document.getElementById('deleteBtn').addEventListener('click', function(e) {
             if (!selectedRow || selectedRow.dataset.id === 'new') {
-                alert('Please select a room rate to delete.');
+                alert('Please select a room to delete.');
                 e.preventDefault();
                 return;
             }
-            if (!confirm('Are you sure you want to delete this room rate?')) {
+            if (!confirm('Are you sure you want to delete this room?')) {
                 e.preventDefault();
                 return;
             }
@@ -296,82 +295,71 @@
         });
 
         // Handle Save button
-        document.querySelector('form[action="index.php?action=save&tab=roomrate"]').addEventListener('submit', function(e) {
-            e.preventDefault();
-            if (!selectedRow) {
-                alert('Please select a row to save or use the new row.');
-                return;
-            }
+       // Handle Save button
+document.querySelector('form[action="index.php?action=save&tab=roomrate"]').addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (!selectedRow) {
+        alert('Please select a row to save or use the new row.');
+        return;
+    }
 
-            const id = selectedRow.dataset.id === 'new' ? '' : selectedRow.dataset.id;
-            const hotelIdElement = document.getElementById('hotelDropdown');
-            const roomTypeIdElement = document.getElementById('roomTypeDropdown');
-            const seasonIdElement = document.getElementById('seasonDropdown');
-            const roomTypeElement = selectedRow.querySelector('[data-field="room_type_id"]');
-            const seasonElement = selectedRow.querySelector('[data-field="season_id"]');
-            const rateElement = selectedRow.querySelector('[data-field="rate"]');
-            const currencyElement = selectedRow.querySelector('[data-field="currency"]');
-            const isDefaultElement = selectedRow.querySelector('[data-field="isdefault"]');
-            const remarkElement = selectedRow.querySelector('[data-field="remark"]');
-            const accountElement = selectedRow.querySelector('[data-field="account"]');
+    const id = selectedRow.dataset.id === 'new' ? '' : selectedRow.dataset.id;
+    const hotelIdElement = document.getElementById('hotelDropdown');
+    const roomTypeIdElement = document.getElementById('roomTypeDropdown');
+    const seasonElement = selectedRow.querySelector('[data-field="season"]');
+    const tagtypeElement = selectedRow.querySelector('[data-field="tagtype"]');
+    const rateElement = selectedRow.querySelector('[data-field="rate"]');
+    const isDefaultElement = selectedRow.querySelector('[data-field="is_default"]');
+    const currencyElement = selectedRow.querySelector('[data-field="currency"]');
+    const pricetagElement = selectedRow.querySelector('[data-field="pricetag"]');
+    const descriptionElement = selectedRow.querySelector('[data-field="description"]');
 
-            const hotel_id = hotelIdElement ? hotelIdElement.value : 0;
-            const room_type_id = roomTypeElement ? roomTypeElement.value : 0;
-            const season_id = seasonElement ? seasonElement.value : 0;
-            const rate = rateElement ? rateElement.textContent.trim() : '';
-            const currency = currencyElement ? currencyElement.value : '';
-            const isdefault = isDefaultElement ? (isDefaultElement.checked ? '1' : '0') : '0';
-            const remark = remarkElement ? remarkElement.textContent.trim() : '';
-            const account = accountElement ? accountElement.textContent.trim() : '';
+    const hotel_id = hotelIdElement ? hotelIdElement.value : 0;
+    const room_type_id = roomTypeIdElement ? roomTypeIdElement.value : 0;
+    const season = seasonElement ? seasonElement.value : '';
+    const tagtype = tagtypeElement ? tagtypeElement.value : '';
+    const rate = rateElement ? rateElement.value : 0;
+    const is_default = isDefaultElement ? isDefaultElement.checked ? 1 : 0 : 0;
+    const currency = currencyElement ? currencyElement.value : '';
+    const pricetag = pricetagElement ? pricetagElement.value : '';
+    const description = descriptionElement ? descriptionElement.value : '';
 
-            console.log('Saving:', { id, hotel_id, room_type_id, season_id, rate, currency, isdefault, remark, account });
+    if (!season || !description || !rate || !currency) {
+        alert('Season, description, rate, and currency are required.');
+        return;
+    }
+    if (hotel_id == 0 || room_type_id == 0) {
+        alert('Please select a hotel and room type.');
+        return;
+    }
 
-            if (!room_type_id || room_type_id == 0 || !season_id || season_id == 0 || !rate || !currency) {
-                alert('Room Type, Season, Rate, and Currency are required.');
-                return;
-            }
-            if (hotel_id == 0) {
-                alert('Please select a hotel.');
-                return;
-            }
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'index.php?action=save&tab=roomrate';
 
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'index.php?action=save&tab=roomrate';
+    const fields = { id, hotel_id, room_type_id, season, description, rate, is_default, currency, tagtype, pricetag };
+    for (const [key, value] of Object.entries(fields)) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = value;
+        form.appendChild(input);
+    }
 
-            const fields = { id, hotel_id, room_type_id, season_id, rate, currency, isdefault, remark, account };
-            for (const [key, value] of Object.entries(fields)) {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = key;
-                input.value = value;
-                form.appendChild(input);
-            }
-
-            document.body.appendChild(form);
-            form.submit();
-        });
-
-        // Update hotel_id, room_type_id, and season_id in URL when dropdowns change
+    document.body.appendChild(form);
+    form.submit();
+});
+        // Update hotel_id and room_type_id in URL when dropdowns change
         document.getElementById('hotelDropdown').addEventListener('change', function() {
             const hotelId = this.value;
             const roomTypeId = document.getElementById('roomTypeDropdown').value;
-            const seasonId = document.getElementById('seasonDropdown').value;
-            window.history.pushState({}, '', `index.php?tab=roomrate&hotel_id=${hotelId}&room_type_id=${roomTypeId}&season_id=${seasonId}`);
+            window.history.pushState({}, '', `index.php?tab=room&hotel_id=${hotelId}&room_type_id=${roomTypeId}`);
         });
 
         document.getElementById('roomTypeDropdown').addEventListener('change', function() {
             const hotelId = document.getElementById('hotelDropdown').value;
             const roomTypeId = this.value;
-            const seasonId = document.getElementById('seasonDropdown').value;
-            window.history.pushState({}, '', `index.php?tab=roomrate&hotel_id=${hotelId}&room_type_id=${roomTypeId}&season_id=${seasonId}`);
-        });
-
-        document.getElementById('seasonDropdown').addEventListener('change', function() {
-            const hotelId = document.getElementById('hotelDropdown').value;
-            const roomTypeId = document.getElementById('roomTypeDropdown').value;
-            const seasonId = this.value;
-            window.history.pushState({}, '', `index.php?tab=roomrate&hotel_id=${hotelId}&room_type_id=${roomTypeId}&season_id=${seasonId}`);
+            window.history.pushState({}, '', `index.php?tab=room&hotel_id=${hotelId}&room_type_id=${roomTypeId}`);
         });
 
         // Show error modal if set

@@ -119,7 +119,6 @@
         <select id="hotelDropdown" name="hotel_id">
             <option value="0">Select Hotel</option>
             <?php
-            error_log('Hotels in view: ' . print_r($hotels, true)); 
             foreach ($hotels as $hotel): ?>
                 <option value="<?php echo $hotel->id; ?>" <?php echo $selectedHotelId && $selectedHotelId == $hotel->id ? 'selected' : ''; ?>>
                     <?php echo htmlspecialchars($hotel->name); ?>
@@ -155,7 +154,6 @@
                     'Presidential Room', 'Single', 'Standard', 'Suite', 'Twin'
                 ];
                 foreach ($roomTypes as $roomType):
-                    $selected = isset($_SESSION['selected_roomtype']) && $_SESSION['selected_roomtype'] == $roomType->id ? 'selected' : '';
                 ?>
                     <tr class="<?php echo $selected; ?>" data-id="<?php echo $roomType->id; ?>" data-hotel-id="<?php echo $roomType->hotel_id; ?>">
                         <td><?php echo $sn++; ?></td>

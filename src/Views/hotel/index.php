@@ -236,12 +236,7 @@
         const name = nameElement ? nameElement.innerText.trim() : '';
         const grade = gradeElement ? gradeElement.value : '';
         const isDefault = isDefaultElement ? (isDefaultElement.checked ? 1 : 0) : 0;
-        const remark = remarkElement ? remarkElement.innerText.trim() : '';
-
-        // Debug the values
-        console.log('Saving:', { id, name, grade, is_default: isDefault, remark });
-
-        // Validation: Ensure required fields are filled
+        const remark = remarkElement ? remarkElement.innerText.trim() : ''
         if (!name) {
             alert('Hotel Name is required.');
             return;
